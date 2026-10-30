@@ -197,6 +197,8 @@
             <form class="contact-form" id="application-form" method="post">
                 <label for="contact-name">Nombre</label>
                 <input id="contact-name" name="name" autocomplete="name" required>
+                <label for="contact-position">Puesto</label>
+                <input id="contact-position" name="position" autocomplete="organization-title" required>
                 <label for="contact-company">Empresa</label>
                 <input id="contact-company" name="company" autocomplete="organization" required>
                 <div class="form-row">
@@ -336,11 +338,14 @@
 
             const submitButton = form.querySelector('button[type="submit"]');
             const subject = `Nueva postulación para expedición ejecutiva — ${formData.get("industry")}`;
+            const companyAndPosition = `Empresa: ${formData.get("company")} | Puesto: ${formData.get("position")}`;
             const templateParams = {
                 title: subject,
                 subject,
                 name: formData.get("name"),
-                empresa: formData.get("company"),
+                puesto: formData.get("position"),
+                position: formData.get("position"),
+                empresa: companyAndPosition,
                 company: formData.get("company"),
                 telefono: formData.get("phone"),
                 phone: formData.get("phone"),
