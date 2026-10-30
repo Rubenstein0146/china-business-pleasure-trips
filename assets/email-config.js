@@ -1,5 +1,5 @@
 window.EMAILJS_CONFIG = {
-    serviceId: "YOUR_EMAILJS_SERVICE_ID",
-    templateId: "YOUR_EMAILJS_TEMPLATE_ID",
-    publicKey: "YOUR_EMAILJS_PUBLIC_KEY"
+    serviceId: "China Business",
+    templateId: "template_0z1x8ls",
+    publicKey: "Y3yQTe-A7r5OcMz4p"
 };

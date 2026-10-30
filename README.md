@@ -8,13 +8,8 @@ En el repositorio, abre **Settings → Pages** y selecciona **Deploy from a bran
 
 ## Formulario de contacto
 
-El formulario envía las solicitudes mediante EmailJS. Antes de que pueda enviar correos:
+El formulario envía solicitudes mediante EmailJS. Los IDs del servicio, la plantilla y la clave pública ya están configurados en `assets/email-config.js`. La clave pública está diseñada para uso en el navegador; nunca agregues la clave privada.
 
-1. Crea una cuenta en EmailJS y conecta el servicio de correo que recibirá las solicitudes.
-2. Crea una plantilla cuyo destinatario (`To Email`) sea `ventas@chinabusinesssolutions.com`, cuyo campo `Reply-To` sea `{{reply_to}}` y cuyo asunto sea `{{subject}}`.
-3. En el cuerpo de la plantilla, usa `{{name}}`, `{{company}}`, `{{phone}}`, `{{email}}`, `{{industry}}` y `{{needs}}`.
-4. Copia el Service ID, Template ID y Public Key de EmailJS en `assets/email-config.js`, reemplazando los valores `YOUR_EMAILJS_...`.
-5. En la configuración de seguridad de EmailJS, limita los orígenes permitidos a `https://rubenstein0146.github.io`.
-6. Sube el archivo de configuración actualizado al repositorio y prueba el formulario.
+En EmailJS, confirma que la plantilla `Contact Us` tenga como destinatario (`To Email`) `ventas@chinabusinesssolutions.com`, `{{reply_to}}` como Reply-To, `{{subject}}` como asunto y estas variables en el cuerpo: `{{name}}`, `{{company}}`, `{{phone}}`, `{{email}}`, `{{industry}}` y `{{needs}}`. En la configuración de seguridad, limita los orígenes permitidos a `https://rubenstein0146.github.io`.
 
-El envío se realiza desde el navegador con la API pública de EmailJS; no pongas una clave privada en el sitio. Mientras los identificadores sigan siendo marcadores de posición, el formulario no intentará enviar la solicitud y mostrará que falta configurar el correo.
+El envío se realiza desde el navegador mediante la API de EmailJS. El formulario muestra confirmación solo si la API acepta la solicitud; un error de EmailJS se muestra como fallo y conserva los datos para poder reintentar.
