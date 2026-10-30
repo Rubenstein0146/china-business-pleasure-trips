@@ -194,7 +194,10 @@
                     <a class="contact-email" href="https://api.whatsapp.com/send/?phone=5217228370041" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>
                 </div>
             </div>
-            <form class="contact-form" id="application-form">
+            <form class="contact-form" id="application-form" action="https://formsubmit.co/ventas@chinabusinesssolutions.com" method="POST">
+                <input type="hidden" name="_subject" value="Nueva solicitud de entrevista B2B">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
                 <label for="contact-name">Nombre</label>
                 <input id="contact-name" name="name" autocomplete="name" required>
                 <label for="contact-company">Empresa</label>
@@ -217,7 +220,7 @@
                 <textarea id="contact-needs" name="needs" rows="4" required></textarea>
                 <button class="button button-gold" type="submit">Solicitar entrevista ↗</button>
                 <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
-                <p class="form-privacy">Al enviar, se abrirá tu aplicación de correo para que confirmes el envío de tu solicitud.</p>
+                <p class="form-privacy">Al enviar, tus datos se procesarán mediante FormSubmit y se enviarán a ventas@chinabusinesssolutions.com. La primera solicitud puede requerir confirmar la dirección desde un correo de activación.</p>
             </form>
         </section>
     </main>
@@ -309,18 +312,46 @@
         document.addEventListener("visibilitychange", startExperienceGallery);
         startExperienceGallery();
 
-        document.querySelector("#application-form").addEventListener("submit", (event) => {
+        document.querySelector("#application-form").addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.currentTarget;
             if (!form.reportValidity()) return;
 
-            const data = new FormData(form);
-            const subject = encodeURIComponent(`Entrevista de viabilidad B2B — ${data.get("industry")}`);
-            const body = encodeURIComponent(
-                `Nombre: ${data.get("name")}\nEmpresa: ${data.get("company")}\nTeléfono / WhatsApp: ${data.get("phone")}\nCorreo: ${data.get("email")}\nIndustria: ${data.get("industry")}\n\nQué busca importar:\n${data.get("needs")}`
-            );
-            document.querySelector("#form-feedback").textContent = "Se abrirá tu aplicación de correo para confirmar el envío.";
-            window.location.href = `mailto:ventas@chinabusinesssolutions.com?subject=${subject}&body=${body}`;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const feedback = document.querySelector("#form-feedback");
+            const formData = new FormData(form);
+            formData.set("_subject", `Entrevista de viabilidad B2B — ${formData.get("industry")}`);
+            formData.set("_replyto", formData.get("email"));
+            submitButton.disabled = true;
+            feedback.textContent = "Enviando tu solicitud…";
+
+            try {
+                const response = await fetch("https://formsubmit.co/ajax/ventas@chinabusinesssolutions.com", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+
+                if (!response.ok) {
+                    throw new Error(`El servicio de correo respondió con HTTP ${response.status}.`);
+                }
+
+                const result = await response.json();
+                if (!result.success) {
+                    throw new Error(result.message || "El servicio de correo no aceptó la solicitud.");
+                }
+
+                feedback.textContent = "¡Gracias! Tu solicitud fue enviada a nuestro equipo. Nos pondremos en contacto contigo.";
+                form.reset();
+            } catch (error) {
+                console.error("No se pudo enviar la solicitud de contacto.", error);
+                feedback.textContent = "No se pudo enviar tu solicitud. Inténtalo de nuevo o escríbenos directamente a ventas@chinabusinesssolutions.com.";
+            } finally {
+                submitButton.disabled = false;
+            }
         });
 
         document.querySelector("#current-year").textContent = new Date().getFullYear();

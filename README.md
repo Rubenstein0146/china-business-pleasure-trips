@@ -8,4 +8,4 @@ En el repositorio, abre **Settings → Pages** y selecciona **Deploy from a bran
 
 ## Formulario de contacto
 
-El formulario valida los campos y abre la aplicación de correo del visitante con la solicitud dirigida a `ventas@chinabusinesssolutions.com`. No envía ni almacena datos en un servidor.
+El formulario envía las solicitudes a `ventas@chinabusinesssolutions.com` mediante FormSubmit, que procesa los datos y entrega el correo. La primera solicitud puede requerir que el destinatario confirme la activación del formulario desde un correo enviado por FormSubmit. El envío se realiza desde el navegador y no requiere claves privadas en el repositorio.
