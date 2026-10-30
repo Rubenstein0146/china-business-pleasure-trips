@@ -335,14 +335,21 @@
             }
 
             const submitButton = form.querySelector('button[type="submit"]');
+            const subject = `Nueva postulación para expedición ejecutiva — ${formData.get("industry")}`;
             const templateParams = {
-                subject: `Nueva solicitud de entrevista B2B — ${formData.get("industry")}`,
+                title: subject,
+                subject,
                 name: formData.get("name"),
+                empresa: formData.get("company"),
                 company: formData.get("company"),
+                telefono: formData.get("phone"),
                 phone: formData.get("phone"),
                 email,
                 reply_to: email,
+                time: new Date().toLocaleString("es-MX"),
+                expedicion: formData.get("industry"),
                 industry: formData.get("industry"),
+                message: formData.get("needs"),
                 needs: formData.get("needs")
             };
             submitButton.disabled = true;
